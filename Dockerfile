@@ -1,4 +1,6 @@
 FROM circleci/openjdk:11
+
+RUN sudo rm -rf /var/lib/apt/lists/*
 RUN sudo apt-get update && sudo apt-get install gettext docker python-pip python-setuptools wget curl apt-transport-https java-common
 
 # Amazon Corretto JDK
