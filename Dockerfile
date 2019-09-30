@@ -1,18 +1,22 @@
-FROM circleci/openjdk:11
+FROM amazoncorretto:11.0.4
 
-RUN sudo rm -rf /var/lib/apt/lists/*
-RUN sudo apt-get update && sudo apt-get install gettext docker python-pip python-setuptools wget curl apt-transport-https java-common
+RUN yum -y update
+RUN yum -y install git tar gzip ca-certificates wget curl
 
-# Amazon Corretto JDK
-RUN sudo wget https://d3pxv6yz143wms.cloudfront.net/11.0.4.11.1/java-11-amazon-corretto-jdk_11.0.4.11-1_amd64.deb
-RUN sudo dpkg --install java-11-amazon-corretto-jdk_11.0.4.11-1_amd64.deb
-RUN sudo update-alternatives --set java /usr/lib/jvm/java-11-amazon-corretto/bin/java
-RUN sudo update-alternatives --set javac /usr/lib/jvm/java-11-amazon-corretto/bin/javac
+# Docker
+ENV DOCKER_VERSION=19.03.2
+RUN yum -y install iptables procps xz
+RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz
+RUN tar xzvf docker-${DOCKER_VERSION}.tgz
+RUN rm docker-${DOCKER_VERSION}.tgz
+RUN mv docker/ /usr/bin/
+RUN dockerd &
 
-# Kubectl
-RUN sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-RUN sudo chmod +x ./kubectl
-RUN sudo mv ./kubectl /usr/local/bin/kubectl
+# AWS CLI
+RUN yum -y install python-pip
+RUN pip install awscli
 
-# AWS
-RUN sudo pip install awscli
+# kubectl
+RUN wget https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+RUN chmod +x ./kubectl
+RUN mv ./kubectl /usr/local/bin/kubectl
