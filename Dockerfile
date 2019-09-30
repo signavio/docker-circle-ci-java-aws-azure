@@ -1,4 +1,4 @@
-FROM amazoncorretto:11.0.4
+FROM 695480609797.dkr.ecr.eu-central-1.amazonaws.com/signavio-amazoncorretto:11.0.4
 
 RUN yum -y update
 RUN yum -y install git tar gzip ca-certificates wget curl
