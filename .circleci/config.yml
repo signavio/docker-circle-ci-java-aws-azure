@@ -7,14 +7,14 @@ jobs:
       # - setup_remote_docker
       - run:
           name: Docker login
-          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+          command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
 
       # build the application image
-      - run: 
+      - run:
           name: Build image
-          command: docker build -t signavio/circle-ci-java:latest .
+          command: docker build -t 695480609797.dkr.ecr.eu-central-1.amazonaws.com/signavio-circle-ci-corretto:11.0.4 .
 
       # deploy the image
-      - run: 
+      - run:
           name: Push to docker hub
-          command: docker push signavio/circle-ci-java:latest
+          command: docker push 695480609797.dkr.ecr.eu-central-1.amazonaws.com/signavio-circle-ci-corretto:11.0.4
