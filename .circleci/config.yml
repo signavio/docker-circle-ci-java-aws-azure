@@ -1,20 +1,16 @@
-version: 2
-jobs:
-  build:
-    machine: true
-    steps:
-      - checkout
-      # - setup_remote_docker
-      - run:
-          name: Docker login
-          command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
+version: 2.1
 
-      # build the application image
-      - run:
-          name: Build image
-          command: docker build -t 695480609797.dkr.ecr.eu-central-1.amazonaws.com/signavio-circle-ci-corretto:11.0.4 .
+orbs:
+  aws-ecr: circleci/aws-ecr@6.5.0
 
-      # deploy the image
-      - run:
-          name: Push to docker hub
-          command: docker push 695480609797.dkr.ecr.eu-central-1.amazonaws.com/signavio-circle-ci-corretto:11.0.4
+workflows:
+  build_and_push_image:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          context: ECR-old
+          repo: signavio-circle-ci-corretto
+          tag: '11.0.4'
+      - aws-ecr/build-and-push-image:
+          context: ECR
+          repo: signavio-circle-ci-corretto
+          tag: '11.0.4'
