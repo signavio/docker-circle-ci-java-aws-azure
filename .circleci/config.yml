@@ -7,7 +7,7 @@ workflows:
   build_and_push_image:
     jobs:
       - aws-ecr/build-and-push-image:
-          context: ECR-old
+          context: PEX
           repo: signavio-circle-ci-corretto
           tag: '11.0.4'
       - aws-ecr/build-and-push-image:
