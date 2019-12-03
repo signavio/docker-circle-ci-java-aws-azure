@@ -12,5 +12,5 @@ workflows:
           tag: '11.0.4'
       - aws-ecr/build-and-push-image:
           context: ECR
-          repo: circleci-amazoncorretto
+          repo: circleci-amazon-corretto
           tag: '11.0.4'
