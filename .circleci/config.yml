@@ -7,7 +7,7 @@ jobs:
       # - setup_remote_docker
       - run:
           name: Docker login
-          command: eval $(aws ecr get-login --region eu-central-1 --no-include-email)
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
 
       # build the application image
       - run:
